@@ -219,6 +219,25 @@ class JImage
 						break;
 				}
 
+				// Read the exif and find out the orientation
+				$exif = exif_read_data($this->getPath());
+
+				if (!empty($exif['Orientation']))
+				{
+					switch ($exif['Orientation'])
+					{
+						case 8:
+							$thumb->rotate(90, 0, false);
+							break;
+						case 3:
+							$thumb->rotate(180, 0, false);
+							break;
+						case 6:
+							$thumb->rotate(-90, 0, false);
+							break;
+					}
+				}
+
 				// Store the thumb in the results array
 				$generated[] = $thumb;
 			}
